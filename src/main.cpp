@@ -4,8 +4,8 @@
 #include "DHT.h"
 
 #define WIFI_SSID "NansenADM"
-#define WIFI_PASSWORD "#@QMEOA#@00"
-#define BOTtoken "8333009041:AAGUKvlKle2GBiE4vzR63tqfpcKdKwrFnB0"
+#define WIFI_PASSWORD ""
+#define BOTtoken ""
 
 #define LED_PIN1 2
 #define LED_PIN2 15
