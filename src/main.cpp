@@ -7,14 +7,16 @@
 #define WIFI_PASSWORD "#@QMEOA#@00"
 #define BOTtoken "8333009041:AAGUKvlKle2GBiE4vzR63tqfpcKdKwrFnB0"
 
-#define LED_PIN 2
+#define LED_PIN1 2
+#define LED_PIN2 15
 #define DHT_PIN 23
 #define DHTTYPE DHT11
 
 #define BOT_SCAN 1000 
 long lastTimeScan;
 
-bool ledStatus;
+bool ledStatus1;
+bool ledStatus2;
 
 WiFiClientSecure client;
 UniversalTelegramBot bot(BOTtoken, client);
@@ -33,16 +35,31 @@ void handleNewMessages(int numNewMessages) {
     Serial.println("ChatID " + chat_id);
     Serial.println(text);
 
-    if (text == "/ledon") {
-      digitalWrite(LED_PIN, HIGH);
-      ledStatus = true;
+    if (text == "/led1") {
+      digitalWrite(LED_PIN1, HIGH);
+      ledStatus1 = true;
+      bot.sendMessage(chat_id, "Led está ligado", "");
+      Serial.println("Led esta ligado");
+    }
+    
+    if (text == "/led2") {
+      digitalWrite(LED_PIN2, HIGH);
+      ledStatus2 = true;
       bot.sendMessage(chat_id, "Led está ligado", "");
       Serial.println("Led esta ligado");
     }
 
     if (text == "/ledoff") {
-      ledStatus = false;
-      digitalWrite(LED_PIN, LOW);
+      ledStatus1 = false;
+      digitalWrite(LED_PIN1, LOW);
+      bot.sendMessage(chat_id, "Led está desligado", "");
+      Serial.println("Led esta desligado");
+    }
+
+    if (text == "/ledoff")
+    {
+      ledStatus2 = false;
+      digitalWrite(LED_PIN2, LOW);
       bot.sendMessage(chat_id, "Led está desligado", "");
       Serial.println("Led esta desligado");
     }
@@ -56,13 +73,27 @@ void handleNewMessages(int numNewMessages) {
       Serial.println(message);      
     }
 
-    if (text == "/status") {
-      String message = "Led está ";
-      if(ledStatus){
-        message += "ligado";
-      }else{
-        message += "desligado";
-      }
+   if (text == "/status") {
+  String message = "";
+
+  // LED 1
+  message += "LED 1 está ";
+  if (ledStatus1) {
+    message += "ligado";
+  } else {
+    message += "desligado";
+  }
+
+  // Quebra de linha entre os dois LEDs
+  message += "\n";
+
+  // LED 2
+  message += "LED 2 está ";
+  if (ledStatus2) {
+    message += "ligado";
+  } else {
+    message += "desligado";
+  }
       message += ". \n";
       humidity = dht.readHumidity();
       temperature = dht.readTemperature();
@@ -102,10 +133,13 @@ void setupWifi(){
 }
 
 void setupPins(){
-  pinMode(LED_PIN, OUTPUT); 
+  pinMode(LED_PIN1, OUTPUT); 
+  pinMode(LED_PIN2, OUTPUT); 
   pinMode(DHT_PIN, INPUT); 
-  digitalWrite(LED_PIN, LOW);
-  ledStatus = false;
+  digitalWrite(LED_PIN1, LOW);
+  digitalWrite(LED_PIN2, LOW);
+  ledStatus1 = false;
+  ledStatus2 = false;
   dht.begin();
 }
 
