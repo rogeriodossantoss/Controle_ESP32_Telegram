@@ -3,9 +3,9 @@
 #include <UniversalTelegramBot.h>
 #include "DHT.h"
 
-#define WIFI_SSID "NansenADM"
+#define WIFI_SSID "SSID HERE"
 #define WIFI_PASSWORD "password here"
-#define BOTtoken "5440239071:MalKlrgelteE4vve2GzR63AAtqfFnB0poiregro"
+#define BOTtoken "TOKEN HERE"
 
 #define LED_PIN1 2
 #define LED_PIN2 15
